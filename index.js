@@ -7,7 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const safe_url = 'https://raw.githubusercontent.com/TabulateJarl8/randfacts/master/randfacts/safe.txt';
 const unsafe_url = 'https://raw.githubusercontent.com/TabulateJarl8/randfacts/master/randfacts/unsafe.txt';
-
+const safe_facts = [];
+const unsafe_facts = [];
 
 app.use(express.json());
 
@@ -46,12 +47,27 @@ request(unsafe_url)
     //handle error
 });
 
+// Creates lists of facts to randomly choose from.
+lineReader.eachLine('safe.txt', function(line) {
+  safe_facts.push(line);
+});
+
+lineReader.eachLine('unsafe.txt', function(line) {
+  unsafe_facts.push(line);
+});
+
 app.get('/', (req, res) => {
     res.send('Welcome to the Randfacts REST-API!');
 });
 
 app.get('/fact/safe', async (req, res) => {
-    console.log(t);
+  var safe_fact = safe_facts[Math.floor(Math.random()*safe_facts.length)];
+  res.send(safe_fact);
+});
+
+app.get('/fact/unsafe', async (req, res) => {
+  var unsafe_fact = unsafe_facts[Math.floor(Math.random()*unsafe_facts.length)];
+  res.send(unsafe_fact);
 });
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
