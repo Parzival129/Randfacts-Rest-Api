@@ -66,7 +66,6 @@ app.get('/', function(req, res) {
 });
 
 
-
 app.get('/fact/safe', async (req, res) => {
   var safe_fact = safe_facts[Math.floor(Math.random()*safe_facts.length)];
   res.send(safe_fact);
@@ -76,5 +75,6 @@ app.get('/fact/unsafe', async (req, res) => {
   var unsafe_fact = unsafe_facts[Math.floor(Math.random()*unsafe_facts.length)];
   res.send(unsafe_fact);
 });
+
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
