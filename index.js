@@ -1,14 +1,18 @@
+// Import libraries 
 const express = require('express');
 const request = require('request-promise');
 const fs = require('fs');
 const lineReader = require('line-reader');
 
+// Initilize all import constant variables
 const app = express();
 const PORT = process.env.PORT || 5000;
 const safe_url = 'https://raw.githubusercontent.com/TabulateJarl8/randfacts/master/randfacts/safe.txt';
 const unsafe_url = 'https://raw.githubusercontent.com/TabulateJarl8/randfacts/master/randfacts/unsafe.txt';
 const safe_facts = [];
 const unsafe_facts = [];
+
+app.set('view engine', 'ejs');
 
 app.use(express.json());
 
@@ -56,9 +60,12 @@ lineReader.eachLine('unsafe.txt', function(line) {
   unsafe_facts.push(line);
 });
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the Randfacts REST-API!');
+// index page
+app.get('/', function(req, res) {
+  res.render('pages/index');
 });
+
+
 
 app.get('/fact/safe', async (req, res) => {
   var safe_fact = safe_facts[Math.floor(Math.random()*safe_facts.length)];
