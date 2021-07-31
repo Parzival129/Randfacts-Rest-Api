@@ -20,36 +20,58 @@ function Trim(list) {
     return list.replace('\r\n ','');
   }
 
-// scrapes github for facts and puts them in files
-request(safe_url)
-  .then(function(html){
-    //success!
-    Trim(html);
-    // console.log(html);
-    fs.writeFile('safe.txt', html, (err) => {
+//////////////////////////////////////////////////////
+function download_fact_list(url, filename) {
+  request(url)
+    .then(function(html){
+      //success!
+      Trim(html);
+      // console.log(html);
+      fs.writeFile(filename, html, (err) => {
       
-        // In case of a error throw err.
-        if (err) throw err;
+          // In case of a error throw err.
+          if (err) throw err;
+      })
     })
-  })
-  .catch(function(err){
-    //handle error
-  });
+    .catch(function(err){
+      //handle error
+    });
+}
 
-request(unsafe_url)
-  .then(function(html){
-    //success!
-    Trim(html);
-    // console.log(html);
-    fs.writeFile('unsafe.txt', html, (err) => {
+download_fact_list(safe_url, 'safe.txt');
+download_fact_list(unsafe_url, 'unsafe.txt');
+/////////////////////////////////////////////////////////
+
+// scrapes github for facts and puts them in files
+// request(safe_url)
+//   .then(function(html){
+//     //success!
+//     Trim(html);
+//     // console.log(html);
+//     fs.writeFile('safe.txt', html, (err) => {
       
-        // In case of a error throw err.
-        if (err) throw err;
-    })
-  })
-  .catch(function(err){
-    //handle error
-});
+//         // In case of a error throw err.
+//         if (err) throw err;
+//     })
+//   })
+//   .catch(function(err){
+//     //handle error
+//   });
+
+// request(unsafe_url)
+//   .then(function(html){
+//     //success!
+//     Trim(html);
+//     // console.log(html);
+//     fs.writeFile('unsafe.txt', html, (err) => {
+      
+//         // In case of a error throw err.
+//         if (err) throw err;
+//     })
+//   })
+//   .catch(function(err){
+//     //handle error
+// });
 
 // Creates lists of facts to randomly choose from.
 lineReader.eachLine('safe.txt', function(line) {
